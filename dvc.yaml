@@ -1,0 +1,67 @@
+stages:
+  ingestion:
+    cmd: python -m src.Xray.pipeline.ingestion
+    deps:
+      - src/Xray/pipeline/ingestion.py
+      - src/Xray/components/data_ingestion.py
+    params:
+      - data_ingestion
+    outs:
+      - artifacts/data_ingestion/data
+      - artifacts/data_ingestion/data.zip
+  
+  transformation:
+    cmd: python -m src.Xray.pipeline.transformation
+    deps:
+      - artifacts/data_ingestion/data
+      - src/Xray/pipeline/transformation.py
+      - src/Xray/components/data_preparation.py
+    params:
+      - transform
+      - data_preparation
+    outs:
+      - artifacts/transform/train_transform.pkl
+      - artifacts/transform/test_transform.pkl
+
+  training:
+    cmd:
+      - bentoml list | grep -q 'image_classifier_service' && bentoml delete image_classifier_service --yes || echo "Bento 'image_classifier_service' not found. No action taken."
+      - bentoml models list | grep -q 'model' && bentoml models delete model --yes || echo "Model 'model' not found. No action taken."
+      - python -m src.Xray.pipeline.training
+    deps:
+      - src/Xray/pipeline/training.py
+      - src/Xray/components/data_preparation.py
+      - src/Xray/components/model_preparation.py
+      - src/Xray/components/model_training.py
+      - artifacts/data_ingestion/data
+      - artifacts/transform/train_transform.pkl
+      - artifacts/transform/test_transform.pkl
+    params:
+      - data_preparation
+      - model
+      - model_preparation
+    outs:
+      - artifacts/model/model.pt
+      - artifacts/model/model.pth
+      - artifacts/model/scripted_model.pt
+      - artifacts/model/architecture.png
+      - artifacts/model/architecture
+
+  evaluation:
+    cmd: python -m src.Xray.pipeline.evaluation
+    deps:
+      - artifacts/data_ingestion/data
+      - src/Xray/pipeline/evaluation.py
+      - src/Xray/components/model_evaluation.py
+      - artifacts/data_ingestion/data
+      - artifacts/model/model.pt
+      - artifacts/model/model.pth
+      - artifacts/model/scripted_model.pt
+      - artifacts/transform/train_transform.pkl
+      - artifacts/transform/test_transform.pkl
+    params:
+      - model
+      - model_evaluation
+    # metrics:
+    # - score.json:
+    #     cache: false

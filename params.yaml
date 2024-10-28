@@ -1,0 +1,57 @@
+artifacts_root: artifacts
+
+data_ingestion:
+  ARTIFACT_DIR: artifacts/data_ingestion
+  LOCAL_DIR: artifacts/data_ingestion/data
+  DATA_SOURCE: 'https://drive.google.com/file/d/1pfIAlurfeqFTbirUZ5v_vapIoGPgRiXY/view?usp=sharing'
+  DATA_FILE_PATH: artifacts/data_ingestion/data.zip
+  BUCKET_NAME: 'leson207'
+  CLOUD_DIR: 'data'
+
+transform:
+  BRIGHTNESS: 0.1
+  CONTRAST: 0.1
+  SATURATION: 0.1
+  HUE: 0.1
+  RESIZE_SIZE: 224
+  CENTERCROP_SIZE: 224
+  RANDOM_ROTATION: 10
+  NORMALIZE_MEAN: [0.485, 0.456, 0.406]
+  NORMALIZE_STD: [0.229, 0.224, 0.225]
+
+data_preparation:
+  TRANSFORM:
+  TRAIN_DATA_PATH: 'artifacts/data_ingestion/data/train'
+  TEST_DATA_PATH: 'artifacts/data_ingestion/data/test'
+  BATCH_SIZE: 16
+  PIN_MEMORY: True
+  ARTIFACT_DIR: 'artifacts/transform'
+  TRAIN_TRANSFORM_FILE: 'artifacts/transform/train_transform.pkl'
+  TEST_TRANSFORM_FILE: 'artifacts/transform/test_transform.pkl'
+
+model:
+  NUM_CLASSES: 2
+  INPUT_SHAPE: [1, 3,224,224]
+
+model_preparation:
+  ARGS:
+  ARTIFACT_DIR: 'artifacts/model'
+  MODEL_PATH: 'artifacts/model/model.pt'
+  SCRIPTED_MODEL_PATH: 'artifacts/model/scripted_model.pt'
+  STATE_DICT_PATH: artifacts/model/model.pth
+
+model_trainining:
+  STEP_SIZE: 6
+  GAMMA: 0.5
+  LEARNING_RATE: 0.001
+  EPOCHS: 1
+  ARTIFACT_DIR: 'artifacts/training'
+
+model_evaluation:
+  ARGS:
+  BATCH_SIZE: 32
+  TEST_DATA_DIR: 'artifacts/data_ingestion/data/test'
+  TEST_TRANFORM_PATH: 'artifacts/transform/test_transform.pkl'
+  MODEL_PATH: 'artifacts/model/model.pt'
+  SCRIPTED_MODEL_PATH: 'artifacts/model/scripted_model.pt'
+  STATE_DICT_PATH: artifacts/model/model.pth

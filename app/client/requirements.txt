@@ -1,0 +1,4 @@
+bentoml
+pillow
+fastapi[standard]
+py-grpc-prometheus

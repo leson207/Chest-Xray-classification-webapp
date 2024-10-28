@@ -1,0 +1,14 @@
+service: 'service.py:svc'
+labels:
+  owner: lesnon207
+  project: image_classification
+include:
+  - 'service.py'
+  - 'src/Xray/model/architecture.py'
+python:
+  packages:
+    - pillow
+    - torch
+    - torchvision
+  extra_index_url:
+    - https://download.pytorch.org/whl/cpu
