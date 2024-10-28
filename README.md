@@ -14,7 +14,7 @@ dvc init
 python3 setup.py install
 ```
 
-Data link #link[https://drive.google.com/file/d/1pfIAlurfeqFTbirUZ5v_vapIoGPgRiXY/view?usp=sharing]
+Data link [link](https://drive.google.com/file/d/1pfIAlurfeqFTbirUZ5v_vapIoGPgRiXY/view?usp=sharing)
 
 # AWS
 
