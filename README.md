@@ -1,3 +1,12 @@
+# Intro
+An application for predicting pneumonia in a chest X-ray image. It is ready to be deployed to AWS through GitHub Actions:
+- DVC for data versioning
+- S3 for cloud storage
+- MLflow for experiment tracking
+- BentoML for inference endpoint
+- Prometheus/Grafana for system monitoring
+- GitHub Actions for CI/CD
+- AWS for deployment infrastructure
 # ENV
 
 ```bash
@@ -17,16 +26,17 @@ python3 setup.py install
 Data link [link](https://drive.google.com/file/d/1pfIAlurfeqFTbirUZ5v_vapIoGPgRiXY/view?usp=sharing)
 
 # AWS
-
-- create bucket
-- create iamuser, add policy
-- get key
-- config aws cli
+- Create bucket
+- Create iamuser
+- Config aws cli
 
 ```bash
 aws configure
 ```
-
+If deploy
+- Create container registry
+- create vitual server
+- Config github action environment variable
 # RUN
 ```bash
 bentoml delete image_classifier_service --yes
@@ -53,3 +63,6 @@ docker build app/client
 ```bash
 docker compose up
 ```
+
+# Deploy
+![Result](asset/image.png)
