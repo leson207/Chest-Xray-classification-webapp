@@ -35,7 +35,7 @@ aws configure
 ```
 If deploy
 - Create container registry
-- create vitual server
+- Create virtual server
 - Config github action environment variable
 # RUN
 ```bash
@@ -65,4 +65,6 @@ docker compose up
 ```
 
 # Deploy
-![Result](asset/image.png)
+![Web](asset/web.png)
+![Prometheus](asset/prometheus.png)
+![Grafana](asset/grafana.png)
